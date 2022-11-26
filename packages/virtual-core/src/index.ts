@@ -146,7 +146,7 @@ const createOffsetObserver = (mode: ObserverMode) => {
       const offset =
         instance.scrollElement[instance.options.horizontal ? propX : propY]
 
-      cb(Math.max(0, offset - instance.options.scrollMargin))
+      cb(offset - instance.options.scrollMargin)
     }
 
     scroll()
@@ -565,7 +565,7 @@ export class Virtualizer<
     let delta: number;
 
     if (this.options.reverse) {
-      delta = -measuredItemSize;
+      delta = -measuredItemSize + itemSize;
     } else {
       delta = measuredItemSize - itemSize;
     }
@@ -770,7 +770,7 @@ export class Virtualizer<
     let size
     if (this.options.reverse) {
       size = (((this.getMeasurements()[this.options.count - 1]?.start ?? 0) * -1) ||
-      this.options.paddingStart) + this.options.paddingEnd
+      this.options.paddingEnd) + this.options.paddingStart
     } else {
       size = (this.getMeasurements()[this.options.count - 1]?.end ||
       this.options.paddingStart) + this.options.paddingEnd
@@ -860,7 +860,6 @@ function calculateRange({
 }) {
 
   const count = measurements.length - 1
-  let getOffset;
 
   let startIndex
   let endIndex
